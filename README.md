@@ -11,3 +11,6 @@ admin/index.php auth/login.php logout.php signup.php
 mysql/Dockerfile my.cnf init.sql
 nginx/Dockerfile default.conf
 php/Dockerfile php.ini
+
+##
+phpmyadminはうまく開けていません
