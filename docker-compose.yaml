@@ -28,14 +28,18 @@ services:
       - MYSQL_DATABASE=test_db
     ports:
       - 3306:3306
-    volumes: # mysqlのテーブルやらなんやらを保存する
-      - ./docker/mysql/db:/var/lib/mysql
-      - ./docker/mysql:/docker-entrypoint-initdb.d
+    # volumes: # mysqlのテーブルやらなんやらを保存する
+    #   - ./docker/mysql/db:/var/lib/mysql
+    #   - ./docker/mysql:/docker-entrypoint-initdb.d
+    volumes:
+    - mysql-data:/var/lib/mysql
+    - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
   # PHPMyAdminサーバー
   phpmyadmin: # デフォルトのままで不都合ないのでDockerHubにあるイメージをそのまま使う
-    image: phpmyadmin/phpmyadmin:latest
+    image: linuxserver/phpmyadmin
     environment:
-      PMA_HOST: 'test_db' # ホストはデータベースサーバーのサービス名(26行目)
+      PMA_HOST: 'db' # ホストはデータベースサーバーのサービス名(26行目)
       PMA_USER: 'root' # デフォルトでログインしているユーザー(今回はルートユーザー)
       PMA_PASSWORD: 'root' # 上記ユーザーのパスワード(今回はルートユーザーのパスワード)
     ports: # ポートの設定(後で.envでする)
